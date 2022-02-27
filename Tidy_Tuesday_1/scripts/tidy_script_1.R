@@ -35,11 +35,11 @@ Freedom %>%
   geom_violin()+ #graph used to view distribution 
   labs(x = "Year", #defines x axis
        y = "Political Rights", #defines y axis
-       title = "Political Rights from 2000s to Present", #adds title
+       title = "Political Rights from 2000s to Present Day", #adds title
        subtitle = "Data in regards to Colombia, Mexico, & USA", #adds subtitle
        caption = "Source: TidyTuesday Data from 2022-02-22")+ #adds caption
   theme_bw()+ #makes background white
-  scale_fill_manual(values = beyonce_palette(74))+ #adds color but beyonce must hate me bc color isnt working 
+  scale_fill_manual(values = beyonce_palette(127))+ #adds color
   theme(axis.title = element_text(size = 15), #changes axis title size
         plot.title = element_text(size = 20), #changes title size
         text = element_text(family = "baskerville")) #adds font
