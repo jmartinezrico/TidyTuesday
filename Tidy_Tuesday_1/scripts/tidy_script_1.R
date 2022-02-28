@@ -38,7 +38,7 @@ Freedom %>%
        y = "Political Rights", #defines y axis
        title = "Political Rights from 2000s to Present Day", #adds title
        subtitle = "Data in regards to Colombia, Mexico, & USA", #adds subtitle
-       caption = "Source: 2022-02-22 TidyTuesday Data")+ #adds caption
+       caption = "Source: 2022-02-22 TidyTuesday Data Provided By UN and Freedom House")+ #adds caption
   theme_bw()+ #makes background white and adds grid lines
   theme(axis.title = element_text(size = 15), #changes axis title size
         plot.title = element_text(size = 20), #changes title size
