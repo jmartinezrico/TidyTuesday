@@ -38,10 +38,10 @@ altfuel_data %>%
        subtitle = "Data in regards to top 5 US states", #adds subtitle
        caption = "Source: 2022-03-01 TidyTuesday Data Provided By US DOT")+ #adds caption)
   scale_fill_manual(values = beyonce_palette(90))+ #adds color
-  scale_color_manual(values = beyonce_palette(98))+ #adds color
+  scale_color_manual(values = beyonce_palette(98))+ #adds color to outline
   theme_bw()+
   theme(axis.title = element_text(size = 15), #changes axis title size
         plot.title = element_text(size = 20), #changes title size
         text = element_text(family = "baskerville")) #adds font
 
-ggsave(here('Tidy_Tuesday_2/output',"alt_fuel.png"), width = 7, height = 6)
+ggsave(here('Tidy_Tuesday_2/output',"alt_fuel.png"), width = 7, height = 6) #exports plot
