@@ -3,6 +3,10 @@ Jocelyn's Tidy Tuesday Repository for BIOL 551
 
 Here I will be uploading weekly tidy tuedsay assigniments
 
+# Helpful Links
+[Tidy Tuesday Data Repo](https://github.com/rfordatascience/tidytuesday)
+
+[View RMarkdown HTML](https://raw.githack.com/)
 
 # Folders
 [Tidy Tuesday Assignment #1](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_1)
