@@ -1,0 +1,100 @@
+---
+title: 'Tidy Tuesday #4'
+author: "Jocelyn Martinez Rico"
+date: "3/15/2022"
+output: 
+  html_document:
+    theme: yeti
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+Tidy Tuesday assignment #4 on R vignettes for 2022-03-15
+
+# Load libraries
+```{r}
+library(tidyverse)
+library(here)
+library(rcartocolor)
+library(showtext)
+library(ggplot2)
+library(dplyr)
+library(ggridges)
+library(lubridate)
+library(ggstream)
+```
+
+
+```{r, echo = FALSE}
+font_add(family = "baskerville", regular = "Baskerville.ttc")
+showtext_auto()
+```
+
+# Load data
+```{r}
+bioc_data <- read_csv(here("Tidy_Tuesday_4","data", "bioc.csv")) #reads in data
+
+view(bioc_data)
+glimpse(bioc_data)
+
+cran_data <- read_csv(here("Tidy_Tuesday_4","data","cran.csv"))
+
+view(cran_data)
+glimpse(cran_data)
+```
+
+# Data Analysis
+```{r}
+cran_data %>%
+  count(date, sort = TRUE)
+
+cran_new <- cran_data %>% 
+  mutate(datetime = ymd_hms(date),
+         year = year(datetime)) %>% 
+  group_by(year) %>% 
+  summarise(across(c(rnw:rmd), sum)) %>% 
+  filter(year > 2011,
+         year < 2021) %>%
+  rename(RMarkdown = "rmd",
+         RNW = "rnw") %>% 
+  pivot_longer(cols = RNW:RMarkdown,
+               names_to = "Type",
+               values_to = "Values") 
+
+view(cran_new)
+glimpse(cran_new)
+```
+
+# Plotting the data
+
+```{r}
+cols <- c("#FFCC51","#FF8B76") #color codes
+
+cran_new %>%
+  ggplot(aes(x = year,
+           y = Values,
+           fill = Type))+
+  geom_stream(type = "ridge")+ #stream plot in ridge style
+  scale_x_continuous(breaks = seq(2011, 2021, 2))+ #reorders x axis in increments of 2 (low, high, limit)
+  scale_y_continuous(breaks = seq(0, 40000, 10000))+ #reorders y axis in increments of 10 (low, high, limit)
+  scale_fill_manual(values = cols)+ #fills colors
+  labs(x = "Year", #defines x axis
+       y = "Vingnette Value", #defines y axis
+       title = "Vignette Packages Published for R from 2011-2021", #adds title
+       caption = "Source: 2022-03-15 TidyTuesday Data Provided By Robert Flight")+ #adds caption
+  theme_light()+ #b/w background
+  theme(axis.title = element_text(size = 15), #changes axis title size
+        plot.title = element_text(size = 20), #changes title size
+        text = element_text(family = "baskerville")) #adds font
+  
+ggsave(here("Tidy_Tuesday_4/output","vignette.png"), height = 6, width = 8) #exports plot
+```
+
+
+
