@@ -18,3 +18,9 @@ Here I will be uploading weekly tidy tuedsay assigniments
 [Tidy Tuesday Assignment #4](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_4)
 
 [Tidy Tuesday Assignment #5](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_5)
+
+[Tidy Tuesday Assignment #6](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_6)
+
+[Tidy Tuesday Assignment #7](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_7)
+
+[Tidy Tuesday Assignment #8](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_8)
