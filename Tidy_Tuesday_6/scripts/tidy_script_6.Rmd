@@ -31,7 +31,7 @@ library(beyonce)
 
 # Load data 
 ```{r}
-baby_names <- read_csv(here("Tidy_Tuesday_6/data","babynames.csv"))
+baby_names <- read_csv(here("Tidy_Tuesday_6/data","babynames.csv")) #reads data
 
 glimpse(baby_names)
 ```
@@ -77,56 +77,58 @@ showtext_auto()
 ## Plot for baby girl names
 ```{r}
 gcp <- c("#BC5163","#79201E","#A48CA6","#F4BADF","#E777AF","#9D204B","#F59B6C","#EA5768","#FC46AA")
+#function for color palette
 
-bg <- baby_girl %>%
+bg <- baby_girl %>% #name for patchwork code
   ggplot(aes(x = year,
              y = record,
              fill = name,
              color = name))+
-  geom_point(size = 4)+
-  scale_x_continuous(breaks = seq(2000, 2010, 1),
+  geom_point(size = 4)+ #changes point size
+  scale_x_continuous(breaks = seq(2000, 2010, 1), #sets axis limits
                      limits = c(2000, 2010))+
   labs(x = "Year",
        y = "Name Count",
        fill = "Girl Names")+
-  theme_light()+
-  theme(text = element_text(family = "baskerville"),
-        axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_color_manual("Girl Names", values = gcp)
+  theme_light()+ #b/w theme
+  theme(text = element_text(family = "baskerville"), #adds font
+        axis.text.x = element_text(angle = 45, hjust = 1))+ #puts an angle on axis titles
+  scale_color_manual("Girl Names", values = gcp) #adds color with color function
 bg
 ```
 
 ## Plot for baby boy names
 ```{r}
 bcp <- c("#6781a8","#c98366","#3d4763","#d4b6a6","#c1b85a","#627a61","#4368b4","#7f170d","#75ad5e","#212523","#996640")
+#function for color palette
 
-bb <- baby_boy %>%
+bb <- baby_boy %>% #name for patchwork code
   ggplot(aes(x = year,
              y = record,
              fill = name,
              color = name))+
-  geom_point(size = 4)+
-  scale_x_continuous(breaks = seq(2000, 2010, 1),
+  geom_point(size = 4)+ #changes point size
+  scale_x_continuous(breaks = seq(2000, 2010, 1), #sets limits on axis
                      limits = c(2000, 2010))+
   labs(x = "Year",
        y = "Name Count",
        fill = "Boy Names")+
-  theme_light()+
-  theme(text = element_text(family = "baskerville"),
-        axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_color_manual(name = "Boy Names", values = bcp)
+  theme_light()+ #b/w theme
+  theme(text = element_text(family = "baskerville"), #adds font
+        axis.text.x = element_text(angle = 45, hjust = 1))+ #puts and angle on axis labels
+  scale_color_manual(name = "Boy Names", values = bcp) #adds color
 bb
 ```
 
 ## Plot for most used baby names
 ```{r}
-bg+bb+
-  plot_annotation(
-  title = 'Most Used Baby Names From 2000-2010',
-  caption = 'Source: Tidy Tuesday Data 2022-03-22 / US Baby Names') &
-  theme(plot.title = element_text(family = "baskerville"),
+bg+bb+ #combined plot
+  plot_annotation( 
+  title = 'Most Used Baby Names From 2000-2010', #adds title
+  caption = 'Source: Tidy Tuesday Data 2022-03-22 / US Baby Names') & #adds caption, use & to make next code work
+  theme(plot.title = element_text(family = "baskerville"), #changes font
         plot.caption = element_text(family = "baskerville"))
 
-ggsave(here("Tidy_Tuesday_6/output","babynames.png"), height = 6, width = 10)
+ggsave(here("Tidy_Tuesday_6/output","babynames.png"), height = 6, width = 10) #exports plot
 ```
 
