@@ -1,0 +1,62 @@
+---
+title: 'Tidy Tuesday #8'
+author: "Jocelyn Martinez Rico"
+date: "4/4/2022"
+output:
+  html_document:
+    theme: yeti
+    toc: TRUE
+    toc_float: TRUE
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+Tidy Tuesday assignment #8 on digital publications from 2022-04-05 data.
+
+# Load libraries 
+```{r}
+library(tidyverse)
+library(here)
+library(beyonce)
+library(showtext)
+library(ggplot2)
+library(maps)
+library(mapdata)
+library(mapproj)
+```
+
+# Load data
+```{r}
+news_data <- read_csv(here("Tidy_Tuesday_8/data","news_orgs.csv"))
+glimpse(news_data)
+view(news_data)
+```
+
+# Data wrangling 
+```{r}
+news <- news_data %>%
+  select(publication_name, city, state, country, year_founded) %>%
+  filter(state %in% c("CA","NY"))
+view(news)
+
+ca_news <- news %>%
+  select(publication_name, city, state, country, year_founded) %>%
+  filter(state == "CA") 
+glimpse(ca_news)
+
+ny_news <- news %>%
+  select(publication_name, city, state, country, year_founded) %>%
+  filter(state == "NY") 
+glimpse(ny_news)
+```
+
+## Plot for CA
+```{r}
+
+```
+
