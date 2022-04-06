@@ -22,12 +22,12 @@ Tidy Tuesday assignment #8 on digital publications from 2022-04-05 data.
 ```{r}
 library(tidyverse)
 library(here)
-library(beyonce)
+library(rcartocolor)
 library(showtext)
 library(ggplot2)
-library(maps)
-library(mapdata)
-library(mapproj)
+library(dplyr)
+library(patchwork)
+library(gganimate)
 ```
 
 # Load data
@@ -40,23 +40,106 @@ view(news_data)
 # Data wrangling 
 ```{r}
 news <- news_data %>%
-  select(publication_name, city, state, country, year_founded) %>%
+  select(publication_name, city, state, country, year_founded, summary) %>%
   filter(state %in% c("CA","NY"))
 view(news)
+```
 
+```{r}
 ca_news <- news %>%
-  select(publication_name, city, state, country, year_founded) %>%
-  filter(state == "CA") 
+  select(publication_name, city, state, country, year_founded, summary) %>%
+  filter(state == "CA") %>%
+  top_n(publication_name, n = 10)
 glimpse(ca_news)
+```
 
+```{r}
 ny_news <- news %>%
-  select(publication_name, city, state, country, year_founded) %>%
-  filter(state == "NY") 
+  select(publication_name, city, state, country, year_founded, summary) %>%
+  filter(state == "NY") %>%
+  top_n(publication_name, n = 10)
 glimpse(ny_news)
 ```
 
 ## Plot for CA
 ```{r}
+CA <- ca_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+
+  geom_point(size = 5)+
+  transition_states(
+     year_founded, # what are we animating by
+     transition_length = 2, #The relative length of the transition.
+     state_length = 1 # The length of the pause between transitions
+   )+
+  ease_aes("bounce-in-out")+
+  ggtitle('Year: {closest_state}')+ #title changes with animation
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       fill = "Publication Name")+ #fills points
+  theme_bw()+
+  scale_color_carto_d(name = "Publication Name:", palette = "Pastel") #adds color to fill
+CA
+```
 
+```{r, echo=FALSE}
+anim_save(here("Tidy_Tuesday_8/output","ca_publications.gif"))
+```
+
+```{r}
+ca_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+
+  geom_point(size = 5)+
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       fill = "Publication Name")+ #fills points
+  theme_bw()+
+  scale_color_carto_d(name = "Publication Name:", palette = "Pastel") #adds color to fill
+
+ggsave(here("Tidy_Tuesday_8/output","ca_pub.png"))
+```
+
+## Plot for NY
+```{r}
+NY <- ny_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+
+  geom_point(size = 5)+
+  transition_states(
+     year_founded, # what are we animating by
+     transition_length = 2, #The relative length of the transition.
+     state_length = 1 # The length of the pause between transitions
+   )+
+  ease_aes("bounce-in-out")+
+  ggtitle('Year: {closest_state}')+ #title changes with animation
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       fill = "Publication Name")+ #fills points
+  theme_bw()+
+  scale_color_carto_d(name = "Publication Name:", palette = "Vivid") #adds color to fill
+NY
+```
+
+```{r, echo=FALSE}
+anim_save(here("Tidy_Tuesday_8/output","ny_publications.gif"))
+```
+
+```{r}
+ny_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+
+  geom_point(size = 5)+
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       fill = "Publication Name")+ #fills points
+  theme_bw()+
+  scale_color_carto_d(name = "Publication Name:", palette = "Vivid") #adds color to fill
+
+ggsave(here("Tidy_Tuesday_8/output","ny_pub.png"))
 ```
 
