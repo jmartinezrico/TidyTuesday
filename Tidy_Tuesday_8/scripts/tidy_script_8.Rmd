@@ -48,32 +48,34 @@ view(news)
 ```{r}
 ca_news <- news %>%
   select(publication_name, city, state, country, year_founded, summary) %>%
-  filter(state == "CA") %>%
-  top_n(publication_name, n = 10)
+  filter(state == "CA") %>% #isolates for california
+  top_n(publication_name, n = 10) #selects 10 publications
 glimpse(ca_news)
 ```
 
 ```{r}
 ny_news <- news %>%
   select(publication_name, city, state, country, year_founded, summary) %>%
-  filter(state == "NY") %>%
-  top_n(publication_name, n = 10)
+  filter(state == "NY") %>% #isolates new york
+  top_n(publication_name, n = 10) #selects10 publictations
 glimpse(ny_news)
 ```
 
-## Plot for CA
+# Plots for CA and NY
+
+## CA publications
 ```{r}
 CA <- ca_news %>%
   ggplot(aes(x = year_founded,
              y = city,
-             color = publication_name))+
-  geom_point(size = 5)+
+             color = publication_name))+ 
+  geom_point(size = 5)+ # changes point size
   transition_states(
      year_founded, # what are we animating by
-     transition_length = 2, #The relative length of the transition.
-     state_length = 1 # The length of the pause between transitions
+     transition_length = 2, #relative length of the transition.
+     state_length = 1 #length of the pause between transitions
    )+
-  ease_aes("bounce-in-out")+
+  ease_aes("bounce-in-out")+ #animation effect
   ggtitle('Year: {closest_state}')+ #title changes with animation
   labs(x = "Year", #x axis
        y = "City", #y axis
@@ -84,7 +86,12 @@ CA
 ```
 
 ```{r, echo=FALSE}
-anim_save(here("Tidy_Tuesday_8/output","ca_publications.gif"))
+anim_save(here("Tidy_Tuesday_8/output","ca_publications.gif")) #exports gif
+```
+
+```{r, echo = FALSE}
+font_add(family = "baskerville", regular = "Baskerville.ttc")
+showtext_auto()
 ```
 
 ```{r}
@@ -95,26 +102,28 @@ ca_news %>%
   geom_point(size = 5)+
   labs(x = "Year", #x axis
        y = "City", #y axis
+       title = "California Publications throughout the Years",
        fill = "Publication Name")+ #fills points
-  theme_bw()+
+  theme_bw()+ #bw background
+  theme(text = element_text(family = "baskerville"))+
   scale_color_carto_d(name = "Publication Name:", palette = "Pastel") #adds color to fill
 
-ggsave(here("Tidy_Tuesday_8/output","ca_pub.png"))
+ggsave(here("Tidy_Tuesday_8/output","ca_pub.png")) #exports png
 ```
 
-## Plot for NY
+## NY publications
 ```{r}
 NY <- ny_news %>%
   ggplot(aes(x = year_founded,
              y = city,
              color = publication_name))+
-  geom_point(size = 5)+
+  geom_point(size = 5)+ #changes point size
   transition_states(
      year_founded, # what are we animating by
-     transition_length = 2, #The relative length of the transition.
-     state_length = 1 # The length of the pause between transitions
+     transition_length = 2, #relative length of the transition.
+     state_length = 1 #length of the pause between transitions
    )+
-  ease_aes("bounce-in-out")+
+  ease_aes("bounce-in-out")+ #animation effect
   ggtitle('Year: {closest_state}')+ #title changes with animation
   labs(x = "Year", #x axis
        y = "City", #y axis
@@ -125,7 +134,7 @@ NY
 ```
 
 ```{r, echo=FALSE}
-anim_save(here("Tidy_Tuesday_8/output","ny_publications.gif"))
+anim_save(here("Tidy_Tuesday_8/output","ny_publications.gif")) #exports gif
 ```
 
 ```{r}
@@ -133,13 +142,15 @@ ny_news %>%
   ggplot(aes(x = year_founded,
              y = city,
              color = publication_name))+
-  geom_point(size = 5)+
+  geom_point(size = 5)+ #changes point size
   labs(x = "Year", #x axis
        y = "City", #y axis
+       title = "New York Publications throughout the Years",
        fill = "Publication Name")+ #fills points
   theme_bw()+
+  theme(text = element_text(family = "baskerville"))+
   scale_color_carto_d(name = "Publication Name:", palette = "Vivid") #adds color to fill
 
-ggsave(here("Tidy_Tuesday_8/output","ny_pub.png"))
+ggsave(here("Tidy_Tuesday_8/output","ny_pub.png")) #exports png
 ```
 
