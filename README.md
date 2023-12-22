@@ -1,5 +1,5 @@
 # TidyTuesday
-Jocelyn's Tidy Tuesday Repository for BIOL 551
+Jocelyn's Tidy Tuesday Repository
 
 Here I will be uploading weekly tidy tuedsay assigniments
 
