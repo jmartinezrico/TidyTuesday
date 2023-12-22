@@ -24,3 +24,5 @@ Here I will be uploading weekly tidy tuedsay assigniments
 [Tidy Tuesday Assignment #7](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_7)
 
 [Tidy Tuesday Assignment #8](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_8)
+
+[Tidy Tuesday Assignment #9](https://github.com/jmartinezrico/TidyTuesday/tree/main/Tidy_Tuesday_9)
