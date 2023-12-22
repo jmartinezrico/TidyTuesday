@@ -1,0 +1,116 @@
+---
+title: 'Tidy Tuesday #7'
+author: "Jocelyn Martinez Rico"
+date: "3/28/2022"
+output: 
+  html_document:
+    theme: yeti
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+Tidy Tuesday assignment #7 on collegiate sports from 2022-03-29 data.
+
+# Load libraries
+```{r}
+library(tidyverse)
+library(here)
+library(beyonce)
+library(showtext)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+```
+
+# Load data
+```{r}
+sports_data <- read_csv(here("Tidy_Tuesday_7/data","sports.csv"))
+glimpse(sports_data)
+view(sports_data)
+```
+
+# Data analysis
+```{r}
+csun_sports <- sports_data %>%
+  filter(institution_name == "California State University-Northridge", #filters for csun only
+         sports %in% c("Basketball","Soccer","Volleyball","All Track Combined","Golf")) #selects sports
+view(csun_sports)
+glimpse(csun_sports)
+```
+
+## Data for csun women
+```{r}
+csun_women <- csun_sports %>%
+  select(ef_female_count, partic_women, sports, year, unitid, institution_name, classification_name, rev_women, exp_women) #selects columns
+glimpse(csun_women)
+```
+
+## Data for csun men
+```{r}
+csun_men <- csun_sports %>%
+  select(ef_male_count, partic_men, sports, year, unitid, institution_name, classification_name, rev_men, exp_men) #selects columns
+glimpse(csun_men)
+```
+
+# Plotting the data
+
+## Plot for csun women
+
+```{r, echo = FALSE}
+font_add(family = "baskerville", regular = "Baskerville.ttc")
+showtext_auto()
+```
+
+```{r}
+cw <- csun_women %>%
+  ggplot(aes(x = year,
+             y = partic_women,
+             fill = sports))+
+  geom_bar(stat = "identity")+
+  labs(x = "Year", #x axis
+       y = "Women Participants", #y axis
+       fill = "Sports")+ #fills bars
+  theme_bw()+ #b/w background
+  theme(text = element_text(family = "baskerville"), #adds font
+        axis.text.x = element_text(angle = 45, hjust = 1))+ #angles axis labels
+  scale_fill_manual(name = "Sports:", values = beyonce_palette(26)) #adds color
+cw
+```
+
+## Plot for csun men
+```{r}
+cm <- csun_men %>%
+  ggplot(aes(x = year,
+             y = partic_men,
+             fill = sports))+
+  geom_bar(stat = "identity")+
+  labs(x = "Year", #x axis
+       y = "Men Participants", #y axis
+       fill = "Sports")+ #fills bars
+  theme_bw()+ #b/w background
+  theme(text = element_text(family = "baskerville"), #adds font
+        axis.text.x = element_text(angle = 45, hjust = 1))+ #angles axis labels
+  scale_fill_manual(name = "Sports:", values = beyonce_palette(20)) #adds color
+cm
+```
+
+## Combined plot
+```{r}
+cw+cm+ #combined plot
+  plot_annotation( 
+  title = 'Number of CSUN Athletes from 2015-2019', #adds title
+  subtitle = "Participating student athletes in top csun sports.", #adds subtitle
+  caption = 'Source: Tidy Tuesday Data 2022-03-29 / Equity in Athletics Data Analysis NPR') & #adds caption, use & to make next code work
+  theme(plot.title = element_text(family = "baskerville"), #changes font
+        plot.subtitle = element_text(family = "baskerville"),
+        plot.caption = element_text(family = "baskerville"))
+
+ggsave(here("Tidy_Tuesday_7/output","csunsports.png"), height = 6, width = 10) #exports plot
+```
+

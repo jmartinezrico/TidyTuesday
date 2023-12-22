@@ -1,0 +1,156 @@
+---
+title: 'Tidy Tuesday #8'
+author: "Jocelyn Martinez Rico"
+date: "4/4/2022"
+output:
+  html_document:
+    theme: yeti
+    toc: TRUE
+    toc_float: TRUE
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+Tidy Tuesday assignment #8 on digital publications from 2022-04-05 data.
+
+# Load libraries 
+```{r}
+library(tidyverse)
+library(here)
+library(rcartocolor)
+library(showtext)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(gganimate)
+```
+
+# Load data
+```{r}
+news_data <- read_csv(here("Tidy_Tuesday_8/data","news_orgs.csv"))
+glimpse(news_data)
+view(news_data)
+```
+
+# Data wrangling 
+```{r}
+news <- news_data %>%
+  select(publication_name, city, state, country, year_founded, summary) %>%
+  filter(state %in% c("CA","NY"))
+view(news)
+```
+
+```{r}
+ca_news <- news %>%
+  select(publication_name, city, state, country, year_founded, summary) %>%
+  filter(state == "CA") %>% #isolates for california
+  top_n(publication_name, n = 10) #selects 10 publications
+glimpse(ca_news)
+```
+
+```{r}
+ny_news <- news %>%
+  select(publication_name, city, state, country, year_founded, summary) %>%
+  filter(state == "NY") %>% #isolates new york
+  top_n(publication_name, n = 10) #selects10 publictations
+glimpse(ny_news)
+```
+
+# Plots for CA and NY
+
+## CA publications
+```{r}
+CA <- ca_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+ 
+  geom_point(size = 5)+ # changes point size
+  transition_states(
+     year_founded, # what are we animating by
+     transition_length = 2, #relative length of the transition.
+     state_length = 1 #length of the pause between transitions
+   )+
+  ease_aes("bounce-in-out")+ #animation effect
+  ggtitle('Year: {closest_state}')+ #title changes with animation
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       fill = "Publication Name")+ #fills points
+  theme_bw()+
+  scale_color_carto_d(name = "Publication Name:", palette = "Pastel") #adds color to fill
+CA
+```
+
+```{r, echo=FALSE}
+anim_save(here("Tidy_Tuesday_8/output","ca_publications.gif")) #exports gif
+```
+
+```{r, echo = FALSE}
+font_add(family = "baskerville", regular = "Baskerville.ttc")
+showtext_auto()
+```
+
+```{r}
+ca_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+
+  geom_point(size = 5)+
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       title = "California Publications throughout the Years",
+       fill = "Publication Name")+ #fills points
+  theme_bw()+ #bw background
+  theme(text = element_text(family = "baskerville"))+
+  scale_color_carto_d(name = "Publication Name:", palette = "Pastel") #adds color to fill
+
+ggsave(here("Tidy_Tuesday_8/output","ca_pub.png")) #exports png
+```
+
+## NY publications
+```{r}
+NY <- ny_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+
+  geom_point(size = 5)+ #changes point size
+  transition_states(
+     year_founded, # what are we animating by
+     transition_length = 2, #relative length of the transition.
+     state_length = 1 #length of the pause between transitions
+   )+
+  ease_aes("bounce-in-out")+ #animation effect
+  ggtitle('Year: {closest_state}')+ #title changes with animation
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       fill = "Publication Name")+ #fills points
+  theme_bw()+
+  scale_color_carto_d(name = "Publication Name:", palette = "Vivid") #adds color to fill
+NY
+```
+
+```{r, echo=FALSE}
+anim_save(here("Tidy_Tuesday_8/output","ny_publications.gif")) #exports gif
+```
+
+```{r}
+ny_news %>%
+  ggplot(aes(x = year_founded,
+             y = city,
+             color = publication_name))+
+  geom_point(size = 5)+ #changes point size
+  labs(x = "Year", #x axis
+       y = "City", #y axis
+       title = "New York Publications throughout the Years",
+       fill = "Publication Name")+ #fills points
+  theme_bw()+
+  theme(text = element_text(family = "baskerville"))+
+  scale_color_carto_d(name = "Publication Name:", palette = "Vivid") #adds color to fill
+
+ggsave(here("Tidy_Tuesday_8/output","ny_pub.png")) #exports png
+```
+

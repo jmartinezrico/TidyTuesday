@@ -1,0 +1,76 @@
+---
+title: 'Tidy Tuesday #5'
+author: "Jocelyn Martinez Rico"
+date: "3/18/2022"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+Tidy Tuesday assignment #5 on makeup shades using data from 2021-03-30
+
+# Load libraries
+```{r}
+library(tidyverse)
+library(here)
+library(rcartocolor)
+library(showtext)
+library(ggplot2)
+library(dplyr)
+```
+
+# Load data
+```{r}
+all_shades <- read_csv(here("Tidy_Tuesday_5/data","allShades.csv"))
+View(all_shades)
+glimpse(all_shades)
+```
+
+# Data analysis
+```{r}
+shades <- all_shades %>%
+  filter(brand %in% c("Dior","L'Oreal","Lancôme","Maybelline","Guerlain","MAC","NARS","Yves Saint Laurent
+","Givenchy","Revlon")) #selects top 10 brands
+
+view(shades)
+glimpse(shades)
+```
+
+# Plotting the data
+
+```{r, echo=FALSE}
+font_add(family = "baskerville", regular = "Baskerville.ttc")
+showtext_auto()
+```
+
+
+```{r}
+shade_range <- shades %>% #function for hex shades
+  pull(hex, hex)
+
+shades %>%
+  ggplot(aes(x = brand,
+             y = lightness,
+             color = hex))+
+  geom_jitter(size = 3)+ #changes point size
+  scale_color_manual(values = shade_range)+ #colors points using hex codes from data
+  labs(x = "Brand", #x axis
+       y = "Shade Range", #y axis
+       title = "Shade Range Biases in Top 10 Makeup Brands", #adds title
+       caption = "Source: The Pudding / Ofunne Amaka and Amber Thomas")+ #adds caption
+  theme_light()+
+  theme(legend.position = "none",
+        axis.title = element_text(size = 15), #changes axis title size
+        plot.title = element_text(size = 20), #changes title size
+        text = element_text(family = "baskerville")) #adds font
+
+ggsave(here("Tidy_Tuesday_5/output","makeup_shades.png"))
+```
+
