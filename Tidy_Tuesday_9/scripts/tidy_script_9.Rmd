@@ -14,6 +14,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
+# Introduction
+
+Tidy Tuesday assignment #9 on digital publications from 2022-04-05 data.
+
 # Load libraries 
 ```{r}
 library(tidyverse)
