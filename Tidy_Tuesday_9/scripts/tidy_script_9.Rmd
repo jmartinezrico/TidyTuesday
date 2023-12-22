@@ -3,11 +3,9 @@ title: 'Tidy Tuesday #9'
 author: "Jocelyn Martinez Rico"
 date: "12/21/2023"
 output:
-  html_document:
-    theme: yeti
-    toc: TRUE
-    toc_float: TRUE
-  
+ prettydoc::html_pretty:
+    theme: hpstr
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -16,19 +14,19 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # Introduction
 
-Tidy Tuesday assignment #9 on Holiday Episodes from 2023-12-19 data.
+My Tidy Tuesday submission #9 on Holiday Episodes from TidyTuesday Repository 2023-12-19 data.
 
 # Load libraries 
 ```{r}
+library(here)
 library(tidyverse)
 library(readr)
-library(here)
+library(beyonce)
 library(rcartocolor)
 library(showtext)
 library(ggplot2)
 library(dplyr)
 library(patchwork)
-library(gganimate)
 ```
 
 # Load data
@@ -42,3 +40,34 @@ glimpse(episodes)
 view(ep_genres)
 view(episodes)
 ```
+
+# Data clean-up/wrangling
+```{r}
+#For genres data set
+genre_counts <- ep_genres %>%
+  group_by(genres) %>%
+  summarize(count = n()) #counts the occurrences of each genre
+
+top_genres <- head(genre_counts[order(-genre_counts$count), ], 5) #gets the top 5 recurring genres
+
+print(top_genres) #displays top 5
+```
+```{r}
+#For episodes data set
+
+filtered_episodes <- episodes %>% # Selecting specific variables
+  select(parent_primary_title, parent_title_type, average_rating, parent_genres, original_title)
+
+titles_to_search <- c("The Nanny", "Friends", "The Vampire Diaries", "George Lopez", "Modern Family") # Titles to search for
+
+search_results <- filtered_episodes %>% filter(parent_primary_title %in% titles_to_search | original_title %in% titles_to_search) # Filtering based on the selected titles
+
+print(search_results) # Display the search results
+
+highest_rated_episodes <- search_results %>%
+  group_by(parent_primary_title) %>%
+  slice_max(order_by = average_rating, n = 1) #takes highest rated episode from search results
+
+print(highest_rated_episodes) # Display the highest-rated episodes for each title
+```
+
