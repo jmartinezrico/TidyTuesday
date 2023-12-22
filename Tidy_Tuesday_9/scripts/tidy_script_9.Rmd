@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # Introduction
 
-Tidy Tuesday assignment #9 on digital publications from 2022-04-05 data.
+Tidy Tuesday assignment #9 on Holiday Episodes from 2023-12-19 data.
 
 # Load libraries 
 ```{r}
@@ -33,10 +33,12 @@ library(gganimate)
 
 # Load data
 ```{r}
-i_calls <- read_csv(here("Tidy_Tuesday_9/data","internal_calls.csv"))
-e_calls <- read_csv(here("Tidy_Tuesday_9/data","external_calls.csv"))
-glimpse(i_calls)
-glimpse(e_calls)
-view(i_calls)
-view(e_calls)
+ep_genres <- read_csv(here("Tidy_Tuesday_9/data","holiday_episode_genres.csv"))
+episodes <- read_csv(here("Tidy_Tuesday_9/data","holiday_episodes.csv"))
+
+glimpse(ep_genres)
+glimpse(episodes)
+
+view(ep_genres)
+view(episodes)
 ```
