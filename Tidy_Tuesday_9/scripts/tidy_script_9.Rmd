@@ -1,0 +1,38 @@
+---
+title: 'Tidy Tuesday #9'
+author: "Jocelyn Martinez Rico"
+date: "12/21/2023"
+output:
+  html_document:
+    theme: yeti
+    toc: TRUE
+    toc_float: TRUE
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Load libraries 
+```{r}
+library(tidyverse)
+library(readr)
+library(here)
+library(rcartocolor)
+library(showtext)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(gganimate)
+```
+
+# Load data
+```{r}
+i_calls <- read_csv(here("Tidy_Tuesday_9/data","internal_calls.csv"))
+e_calls <- read_csv(here("Tidy_Tuesday_9/data","external_calls.csv"))
+glimpse(i_calls)
+glimpse(e_calls)
+view(i_calls)
+view(e_calls)
+```
