@@ -21,7 +21,6 @@ My Tidy Tuesday submission #9 on Holiday Episodes from TidyTuesday Repository 20
 library(here)
 library(tidyverse)
 library(readr)
-library(beyonce)
 library(rcartocolor)
 library(showtext)
 library(ggplot2)
@@ -48,10 +47,11 @@ genre_counts <- ep_genres %>%
   group_by(genres) %>%
   summarize(count = n()) #counts the occurrences of each genre
 
-top_genres <- head(genre_counts[order(-genre_counts$count), ], 5) #gets the top 5 recurring genres
+top_genres <- head(genre_counts[order(-genre_counts$count), ], 10) #gets the top 5 recurring genres
 
-print(top_genres) #displays top 5
+print(top_genres) #displays top 10
 ```
+
 ```{r}
 #For episodes data set
 
@@ -69,5 +69,31 @@ highest_rated_episodes <- search_results %>%
   slice_max(order_by = average_rating, n = 1) #takes highest rated episode from search results
 
 print(highest_rated_episodes) # Display the highest-rated episodes for each title
+```
+
+#Plotting the data
+```{r}
+font_add_google(name = "Lora",   # Name of the font on the Google Fonts site
+                family = "lora") # Name you want to use to call the font
+showtext_auto() #adds font
+```
+
+#Plot for Top 10
+```{r}
+xmas <- c("#6d0006", "#a91c24", "#e3d1c3", "#87a447", "#893119", "#374949", "#4f764a", "#96aeba", "#ce1f26", "#21406c")
+
+t10 <- top_genres %>%
+  ggplot(aes(x = genres,
+             y = count,
+             fill = genres)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Genres",
+       y = "Frequency of TV Episodes",
+       fill = "Genres") + #Sets color
+  theme_bw() + #theme for background
+  theme(text = element_text(family = "lora"), #Adds font to plot
+        axis.text.x = element_text(angle = 45, hjust = 1)) + #Creates angled axes
+  scale_fill_manual("Genres:", values = xmas) #Fills bars with colors from xmas color set
+t10
 ```
 
