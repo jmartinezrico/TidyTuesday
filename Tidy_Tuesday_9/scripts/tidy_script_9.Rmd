@@ -96,4 +96,40 @@ t10 <- top_genres %>%
   scale_fill_manual("Genres:", values = xmas) #Fills bars with colors from xmas color set
 t10
 ```
+#Plot for highest-rated episodes for selected titles
+```{r}
+# Check unique values in parent_primary_title
+unique_values <- unique(highest_rated_episodes$parent_primary_title)
+print(unique_values)
+
+# Check the number of unique values
+num_unique_values <- length(unique_values)
+print(num_unique_values)
+
+# Check the structure of highest_rated_episodes
+str(highest_rated_episodes)
+```
+
+```{r}
+# Data frame for colors
+cshows <- c("#c66a81", "#6b070f", "#797e84", "#d0000e", "#233329")
+
+# Plot for episodes
+hr_ep <- highest_rated_episodes %>%
+  ggplot(aes(x = parent_primary_title, 
+             y = average_rating, 
+             fill = parent_genres)) +
+  geom_point(size = 3) +
+  geom_text(aes(label = original_title), vjust = -0.5, hjust = 1, check_overlap = TRUE) +  # Adjusted text label
+  labs(title = "Average Rating of Highest Rated Episodes by Genre",
+       x = "Parent Primary Title",
+       y = "Average Rating",
+       fill = "Parent Genres") +
+  theme_bw() +
+  theme(text = element_text(family = "lora"),  # Adds font to plot
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(name = "Parent Genres", values = cshows)  # Set legend title consistently
+hr_ep
+
+```
 
